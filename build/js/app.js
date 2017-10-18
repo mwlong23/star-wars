@@ -17,11 +17,7 @@ var StarWarsSearch = exports.StarWarsSearch = function () {
   _createClass(StarWarsSearch, [{
     key: "search",
     value: function search(searchTerm, category) {
-      $.get("https://swapi.co/api/" + category + "/?search=" + searchTerm).then(function (response) {
-        displayData(response);
-      }).fail(function (error) {
-        console.log(error.responseText);
-      });
+      return $.get("https://swapi.co/api/" + category + "/?search=" + searchTerm);
     }
   }]);
 
@@ -41,14 +37,6 @@ var titleCase = function titleCase(string) {
   return stringArray.join(" ");
 };
 
-var search = function search(searchTerm, category) {
-  $.get("https://swapi.co/api/" + category + "/?search=" + searchTerm).then(function (response) {
-    displayData(response);
-  }).fail(function (error) {
-    console.log(error.responseText);
-  });
-};
-
 var displayData = function displayData(response) {
   console.log(response);
   Object.keys(response.results[0]).forEach(function (key) {
@@ -58,11 +46,17 @@ var displayData = function displayData(response) {
 
 $(document).ready(function () {
   var starWars = new _starWars.StarWarsSearch();
+
   $('#search').submit(function (event) {
     event.preventDefault();
     var searchTerm = $('#search-term').val();
     var category = $('#category').val();
-    search(searchTerm, category);
+    var responsePromise = starWars.search(searchTerm, category);
+    responsePromise.then(function (response) {
+      displayData(response);
+    }).fail(function (error) {
+      $('.results').append("<h3>There was an error: " + error.responseText + " </h3>");
+    });
   });
 });
 

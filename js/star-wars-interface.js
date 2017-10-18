@@ -6,17 +6,6 @@ var titleCase = function(string){
     return word.charAt(0).toUpperCase() + word.slice(1);
   });
   return stringArray.join(" ");
-
-}
-
-var search = function(searchTerm, category) {
-  $.get(`https://swapi.co/api/${category}/?search=${searchTerm}`)
-    .then(function(response) {
-      displayData(response);
-    })
-    .fail(function(error) {
-      console.log(error.responseText);
-    });
 }
 
 var displayData = function(response) {
@@ -29,10 +18,17 @@ var displayData = function(response) {
 
 $(document).ready(function() {
   const starWars = new StarWarsSearch();
+
   $('#search').submit(function(event) {
     event.preventDefault();
     let searchTerm = $('#search-term').val();
     let category = $('#category').val();
-    search(searchTerm, category);
+    let responsePromise = starWars.search(searchTerm, category);
+    responsePromise.then(function(response) {
+      displayData(response);
+    })
+    .fail(function(error) {
+      $('.results').append(`<h3>There was an error: ${error.responseText} </h3>`);
+    });
   });
 });
