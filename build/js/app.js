@@ -19,6 +19,11 @@ var StarWarsSearch = exports.StarWarsSearch = function () {
     value: function search(searchTerm, category) {
       return $.get("https://swapi.co/api/" + category + "/?search=" + searchTerm);
     }
+  }, {
+    key: "find",
+    value: function find(url) {
+      return $.get(url);
+    }
   }]);
 
   return StarWarsSearch;
@@ -27,7 +32,11 @@ var StarWarsSearch = exports.StarWarsSearch = function () {
 },{}],2:[function(require,module,exports){
 "use strict";
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _starWars = require("./../js/star-wars.js");
+
+var starWars = new _starWars.StarWarsSearch();
 
 var titleCase = function titleCase(string) {
   var stringArray = string.split("_");
@@ -38,17 +47,44 @@ var titleCase = function titleCase(string) {
 };
 
 var displayData = function displayData(response) {
-  console.log(response);
-  Object.keys(response.results[0]).forEach(function (key) {
-    $('.results').append("<strong>" + titleCase(key) + ":</strong> " + response.results[0][key] + "<br>");
+  var result = response.results[0];
+  Object.keys(result).forEach(function (key) {
+    console.log(result[key]);
+    if (_typeof(result[key]) === 'object') {
+      $('.results').append("<strong>" + titleCase(key) + ":</strong><div class=" + key + "></div>");
+      result[key].forEach(function (url) {
+        var infoPromise = starWars.find(url);
+        infoPromise.then(function (response) {
+          if (response.hasOwnProperty("name")) {
+            $("." + key).append(response.name + "<br>");
+          } else {
+            $("." + key).append(response.title + "<br>");
+          }
+        }).fail(function (error) {
+          console.log(error);
+        });
+      });
+    } else {
+      if (typeof result[key] === "string" && result[key].startsWith('https')) {
+        // api call madness!
+        var infoPromise = starWars.find(result[key]);
+        infoPromise.then(function (response) {
+          $('.results').append("<strong>" + titleCase(key) + ":</strong> " + response.name + "<br>");
+        }).fail(function (error) {
+          console.log(error);
+        });
+      } else {
+        $('.results').append("<strong>" + titleCase(key) + ":</strong> " + result[key] + "<br>");
+      }
+    }
   });
 };
 
 $(document).ready(function () {
-  var starWars = new _starWars.StarWarsSearch();
 
   $('#search').submit(function (event) {
     event.preventDefault();
+    $('.results').html("");
     var searchTerm = $('#search-term').val();
     var category = $('#category').val();
     var responsePromise = starWars.search(searchTerm, category);
