@@ -29,12 +29,20 @@ var StarWarsSearch = exports.StarWarsSearch = function () {
 }();
 
 },{}],2:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _starWars = require('./../js/star-wars.js');
+var _starWars = require("./../js/star-wars.js");
+
+var titleCase = function titleCase(string) {
+  var stringArray = string.split("_");
+  stringArray = stringArray.map(function (word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return stringArray.join(" ");
+};
 
 var search = function search(searchTerm, category) {
-  $.get('https://swapi.co/api/' + category + '/?search=' + searchTerm).then(function (response) {
+  $.get("https://swapi.co/api/" + category + "/?search=" + searchTerm).then(function (response) {
     displayData(response);
   }).fail(function (error) {
     console.log(error.responseText);
@@ -43,12 +51,9 @@ var search = function search(searchTerm, category) {
 
 var displayData = function displayData(response) {
   console.log(response);
-  $("#name").text(response.results[0].name);
-  // $("#gender").text(`Gender: ${response.results[0].gender}`);
-  // $("#height").text(`Height: ${response.results[0].height} cm`);
-  // $("#birth-year").text(`Born: ${response.results[0].birth_year}`);
-  // $("#eye-color").text(`Eye Color: ${response.results[0].eye_color}`);
-  // $("#hair-color").text(`Hair Color: ${response.results[0].hair_color}`);
+  Object.keys(response.results[0]).forEach(function (key) {
+    $('.results').append("<strong>" + titleCase(key) + ":</strong> " + response.results[0][key] + "<br>");
+  });
 };
 
 $(document).ready(function () {
