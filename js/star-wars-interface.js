@@ -9,39 +9,52 @@ let titleCase = function(string){
   return stringArray.join(" ");
 }
 
-let displayData = function(response) {
-  let result = response.results[0];
-  Object.keys(result).forEach(function(key){
-    console.log(result[key]);
-    if (typeof(result[key]) === 'object') {
-      $('.results').append(`<strong>${titleCase(key)}:</strong><div class=${key}></div>`);
-      result[key].forEach(function(url) {
+
+
+let displayProperty = function(key, value) {
+
+  if (key === "name" || key === "title") {
+    $(".results").prepend(`<h2>${value}</h2>`);
+  } else  {
+    $('.results').append(`<div class=${key}><strong>${titleCase(key)}:</strong> </div>`);
+    if (typeof(value) === 'object') {
+      value.forEach(function(url) {
         let infoPromise = starWars.find(url);
         infoPromise.then(function(response) {
+          let displayVal = ""
           if (response.hasOwnProperty("name")) {
-            $(`.${key}`).append(`${response.name}<br>`);
+            displayVal = response.name;
           } else {
-            $(`.${key}`).append(`${response.title}<br>`);
+            displayVal = response.title;
           }
+          $(`.${key}`).append(`<div>${displayVal}<div>`);
         })
         .fail(function(error) {
           console.log(error);
         });
-      })
+      });
     } else {
-      if (typeof(result[key]) ==="string" && result[key].startsWith('https')) {
+      if (typeof(value) ==="string" && value.startsWith('https')) {
         // api call madness!
-        let infoPromise = starWars.find(result[key]);
+        let infoPromise = starWars.find(value);
         infoPromise.then(function(response) {
-          $('.results').append(`<strong>${titleCase(key)}:</strong> ${response.name}<br>`);
+          $(`.${key}`).append(`<span>${response.name}</span>`);
         })
         .fail(function(error) {
           console.log(error);
         });
       } else {
-        $('.results').append(`<strong>${titleCase(key)}:</strong> ${result[key]}<br>`);
+        $(`.${key}`).append(`<span>${value}</span>`);
       }
     }
+  }
+}
+
+let displayData = function(response) {
+  let result = response.results[0];
+  Object.keys(result).forEach(function(key){
+    console.log(result[key]);
+    displayProperty(key, result[key]);
   });
 }
 

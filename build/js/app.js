@@ -46,37 +46,48 @@ var titleCase = function titleCase(string) {
   return stringArray.join(" ");
 };
 
-var displayData = function displayData(response) {
-  var result = response.results[0];
-  Object.keys(result).forEach(function (key) {
-    console.log(result[key]);
-    if (_typeof(result[key]) === 'object') {
-      $('.results').append("<strong>" + titleCase(key) + ":</strong><div class=" + key + "></div>");
-      result[key].forEach(function (url) {
+var displayProperty = function displayProperty(key, value) {
+
+  if (key === "name" || key === "title") {
+    $(".results").prepend("<h2>" + value + "</h2>");
+  } else {
+    $('.results').append("<div class=" + key + "><strong>" + titleCase(key) + ":</strong> </div>");
+    if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
+      value.forEach(function (url) {
         var infoPromise = starWars.find(url);
         infoPromise.then(function (response) {
+          var displayVal = "";
           if (response.hasOwnProperty("name")) {
-            $("." + key).append(response.name + "<br>");
+            displayVal = response.name;
           } else {
-            $("." + key).append(response.title + "<br>");
+            displayVal = response.title;
           }
+          $("." + key).append("<div>" + displayVal + "<div>");
         }).fail(function (error) {
           console.log(error);
         });
       });
     } else {
-      if (typeof result[key] === "string" && result[key].startsWith('https')) {
+      if (typeof value === "string" && value.startsWith('https')) {
         // api call madness!
-        var infoPromise = starWars.find(result[key]);
+        var infoPromise = starWars.find(value);
         infoPromise.then(function (response) {
-          $('.results').append("<strong>" + titleCase(key) + ":</strong> " + response.name + "<br>");
+          $("." + key).append("<span>" + response.name + "</span>");
         }).fail(function (error) {
           console.log(error);
         });
       } else {
-        $('.results').append("<strong>" + titleCase(key) + ":</strong> " + result[key] + "<br>");
+        $("." + key).append("<span>" + value + "</span>");
       }
     }
+  }
+};
+
+var displayData = function displayData(response) {
+  var result = response.results[0];
+  Object.keys(result).forEach(function (key) {
+    console.log(result[key]);
+    displayProperty(key, result[key]);
   });
 };
 
