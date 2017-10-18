@@ -1,7 +1,7 @@
 import { StarWarsSearch } from './../js/star-wars.js';
 const starWars = new StarWarsSearch();
 
-var titleCase = function(string){
+let titleCase = function(string){
   let stringArray = string.split("_");
   stringArray = stringArray.map(function(word){
     return word.charAt(0).toUpperCase() + word.slice(1);
@@ -9,7 +9,7 @@ var titleCase = function(string){
   return stringArray.join(" ");
 }
 
-var displayData = function(response) {
+let displayData = function(response) {
   let result = response.results[0];
   Object.keys(result).forEach(function(key){
     console.log(result[key]);
