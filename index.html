@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="build/css/vendor.css">
+    <script src="build/js/vendor.min.js" charset="utf-8"></script>
+    <script src="build/js/app.js" charset="utf-8"></script>
+    <meta charset="utf-8">
+    <title>Star Wars</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Star Wars</h1>
+      <p>Search for a person from Star Wars to see information about them.</p>
+      <form id="search">
+        <div class="form-group">
+          <label for="search-term">Name:</label>
+          <input type="text" name="search-term" class="form-control">
+        </div>
+        <button type="submit" class="btn">Search</button>
+      </form>
+      <div class="results">
+        <h2 id="name"></h2>
+        <h3 id="gender"></h3>
+        <h3 id="height"></h3>
+        <h3 id="birth-year"></h3>
+        <h3 id="eye-color"></h3>
+        <h3 id="hair-color"></h3>  
+      </div>
+    </div>
+  </body>
+</html>
