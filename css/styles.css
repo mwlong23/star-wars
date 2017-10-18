@@ -1,6 +1,6 @@
 body {
   font-family: 'Exo 2', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   background-color: black;
   color: white;
 }
@@ -31,8 +31,25 @@ body {
 }
 
 .search-btn {
+  color: black;
   display: block;
   margin-top: 2em;
   margin-left: auto;
   margin-right: auto;
+}
+
+.search-btn:hover {
+  color: #a7a7a7;
+  background-color: #5f5f5f;
+}
+
+.results {
+  width: 40%;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.results strong {
+  color: #ffe918;
 }
