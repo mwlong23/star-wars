@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
     <link rel="stylesheet" href="build/css/vendor.css">
+    <link rel="stylesheet" href="css/styles.css">
     <script src="build/js/vendor.min.js" charset="utf-8"></script>
     <script src="build/js/app.js" charset="utf-8"></script>
     <meta charset="utf-8">
@@ -9,10 +11,13 @@
   </head>
   <body>
     <div class="container">
-      <h1>Star Wars</h1>
-      <p>Search for a person from Star Wars to see information about them.</p>
+      <div class="header-img">
+        <img class="logo" src="img/starwars.png" alt="Star Wars Title Logo">
+      </div>
+      <p class="intro">Search for people, places, and things in the Star Wars universe.</p>
       <form id="search">
-        <div class="form-group">
+        <div class="form-group category">
+          <label for="category">Search</label>
           <select class="form-control" id="category" name="category">
             <option value="people">People</option>
             <option value="films">Films</option>
@@ -21,11 +26,11 @@
             <option value="species">Species</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="search-term">Name:</label>
+        <div class="form-group search-term">
+          <label for="search-term">For</label>
           <input id="search-term" type="text" name="search-term" class="form-control">
         </div>
-        <button type="submit" class="btn">Search</button>
+        <button type="submit" class="btn search-btn">Search</button>
       </form>
       <div class="results">
 
