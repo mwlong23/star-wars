@@ -29,12 +29,12 @@ var StarWarsSearch = exports.StarWarsSearch = function () {
 }();
 
 },{}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _starWars = require("./../js/star-wars.js");
+var _starWars = require('./../js/star-wars.js');
 
-var search = function search(searchTerm) {
-  $.get("https://swapi.co/api/people/?search=" + searchTerm).then(function (response) {
+var search = function search(searchTerm, category) {
+  $.get('https://swapi.co/api/' + category + '/?search=' + searchTerm).then(function (response) {
     displayData(response);
   }).fail(function (error) {
     console.log(error.responseText);
@@ -44,18 +44,19 @@ var search = function search(searchTerm) {
 var displayData = function displayData(response) {
   console.log(response);
   $("#name").text(response.results[0].name);
-  $("#gender").text("Gender: " + response.results[0].gender);
-  $("#height").text("Height: " + response.results[0].height + " cm");
-  $("#birth-year").text("Born: " + response.results[0].birth_year);
-  $("#eye-color").text("Eye Color: " + response.results[0].eye_color);
-  $("#hair-color").text("Hair Color: " + response.results[0].hair_color);
+  // $("#gender").text(`Gender: ${response.results[0].gender}`);
+  // $("#height").text(`Height: ${response.results[0].height} cm`);
+  // $("#birth-year").text(`Born: ${response.results[0].birth_year}`);
+  // $("#eye-color").text(`Eye Color: ${response.results[0].eye_color}`);
+  // $("#hair-color").text(`Hair Color: ${response.results[0].hair_color}`);
 };
 
 $(document).ready(function () {
   $('#search').submit(function (event) {
     event.preventDefault();
     var searchTerm = $('#search-term').val();
-    var result = search(searchTerm);
+    var category = $('#category').val();
+    var result = search(searchTerm, category);
     console.log(result);
   });
 });
