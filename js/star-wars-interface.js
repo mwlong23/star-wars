@@ -28,11 +28,11 @@ var displayData = function(response) {
 }
 
 $(document).ready(function() {
+  const starWars = new StarWarsSearch();
   $('#search').submit(function(event) {
     event.preventDefault();
     let searchTerm = $('#search-term').val();
     let category = $('#category').val();
-    let result = search(searchTerm, category);
-    console.log(result);
+    search(searchTerm, category);
   });
 });

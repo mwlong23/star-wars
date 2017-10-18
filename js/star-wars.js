@@ -1,8 +1,9 @@
+
 export class StarWarsSearch {
-  search(searchTerm) {
-    $.get(`https://swapi.co/api/people/?search=${searchTerm}`)
+  search(searchTerm, category) {
+    $.get(`https://swapi.co/api/${category}/?search=${searchTerm}`)
       .then(function(response) {
-        return response;
+        displayData(response);
       })
       .fail(function(error) {
         console.log(error.responseText);

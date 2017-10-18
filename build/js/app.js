@@ -16,9 +16,9 @@ var StarWarsSearch = exports.StarWarsSearch = function () {
 
   _createClass(StarWarsSearch, [{
     key: "search",
-    value: function search(searchTerm) {
-      $.get("https://swapi.co/api/people/?search=" + searchTerm).then(function (response) {
-        return response;
+    value: function search(searchTerm, category) {
+      $.get("https://swapi.co/api/" + category + "/?search=" + searchTerm).then(function (response) {
+        displayData(response);
       }).fail(function (error) {
         console.log(error.responseText);
       });
@@ -57,12 +57,12 @@ var displayData = function displayData(response) {
 };
 
 $(document).ready(function () {
+  var starWars = new _starWars.StarWarsSearch();
   $('#search').submit(function (event) {
     event.preventDefault();
     var searchTerm = $('#search-term').val();
     var category = $('#category').val();
-    var result = search(searchTerm, category);
-    console.log(result);
+    search(searchTerm, category);
   });
 });
 
